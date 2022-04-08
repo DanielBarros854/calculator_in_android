@@ -112,40 +112,30 @@ public class MainActivity<num1> extends AppCompatActivity implements View.OnClic
 
             case R.id.btnAC:
                 ptDisplay.getText().clear();
+                ptDisplay2.getText().clear();
                 this.num1 = Float.parseFloat("0");
                 this.num2 = Float.parseFloat("0");
+                this.operation = "";
                 break;
 
             case R.id.btnMODULE:
-                ptDisplay.append("%"); // call func calculation
+                attDisplay("%"); // call func calculation
                 break;
 
             case R.id.btnDIVISION:
-                ptDisplay.append("÷"); // call func calculation
+                attDisplay("÷"); // call func calculation
                 break;
 
             case R.id.btnMULTI:
-                ptDisplay.append("×"); // call func calculation
+                attDisplay("×");
                 break;
 
             case R.id.btnSUB:
-                ptDisplay.append("-"); // call func calculation
+                attDisplay("-");
                 break;
 
             case R.id.btnSUM:
-                if (!ptDisplay.getText().toString().isEmpty()) {
-                    if (!ptDisplay2.getText().toString().isEmpty()) {
-                        ptDisplay2.getText().clear();
-                        num1 = num1 + Float.parseFloat(ptDisplay.getText().toString());
-                        ptDisplay2.append(num1 + " +");
-                    } else {
-                        this.num1 = Float.parseFloat(ptDisplay.getText().toString());
-                        this.operation = "+";
-                        ptDisplay.getText().clear();
-                        ptDisplay2.append(num1 + " " + operation);
-                    }
-                    ptDisplay.getText().clear();
-                }
+                attDisplay("+");
                 break;
 
             case R.id.btnEQUAL:
@@ -165,9 +155,44 @@ public class MainActivity<num1> extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void attDisplay () {
-        if (!num1.toString().isEmpty()) {
-            //num1 + ptDisplay();
+    private void attDisplay (String operation) {
+        if (!ptDisplay.getText().toString().isEmpty()) {
+            if (!ptDisplay2.getText().toString().isEmpty()) {
+                ptDisplay2.getText().clear();
+
+                num1 = calculate(operation);
+            } else {
+                this.num1 = Float.parseFloat(ptDisplay.getText().toString());
+                ptDisplay.getText().clear();
+            }
+            ptDisplay2.append(num1.toString());
+            ptDisplay.getText().clear();
         }
     };
+
+    private Float calculate (String operation) {
+        float result = Float.parseFloat("0");
+        switch (operation) {
+            case "+":
+                result = num1 + Float.parseFloat(ptDisplay.getText().toString());
+                break;
+
+            case "-":
+                result = num1 - Float.parseFloat(ptDisplay.getText().toString());
+                break;
+
+            case "×":
+                result = num1 * Float.parseFloat(ptDisplay.getText().toString());
+                break;
+
+            case "÷":
+                result = num1 / Float.parseFloat(ptDisplay.getText().toString());
+                break;
+
+            case "%":
+                result = num1 % Float.parseFloat(ptDisplay.getText().toString());
+                break;
+        };
+        return result;
+    }
 }
